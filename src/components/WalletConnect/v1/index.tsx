@@ -9,7 +9,7 @@ import { stripHexPrefix } from '@/utils/currencyFormatter/helpers'
 import WalletConnectClient from '@walletconnect/client'
 import {
 	IJsonRpcRequest,
-	IWalletConnectSession,
+	IWalletConnectSession
 } from '@walletconnect/legacy-types'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -19,7 +19,7 @@ import {
 	useCallback,
 	useEffect,
 	useRef,
-	useState,
+	useState
 } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled, { css, keyframes } from 'styled-components'
@@ -199,6 +199,21 @@ export function WalletConnectV1({
 		}
 	}, [selectedAccount])
 
+	const cleanup = useCallback((timedOut = false) => {
+		// cleaning everything and reverting to initial state
+		setState((oldState) => {
+			return {
+				...oldState,
+				session: null,
+				timedOut,
+			}
+		})
+		wcRef.current = undefined
+		setUri(undefined)
+		localStorage.removeItem('session')
+		localStorage.removeItem('sessionURI')
+	}, [])
+
 	const createClient = useCallback(
 		async (params: {
 			uri?: string
@@ -249,17 +264,7 @@ export function WalletConnectV1({
 			})
 
 			wc.on('disconnect', () => {
-				// cleaning everything and reverting to initial state
-				setState((oldState) => {
-					return {
-						...oldState,
-						session: null,
-					}
-				})
-				wcRef.current = undefined
-				setUri(undefined)
-				localStorage.removeItem('session')
-				localStorage.removeItem('sessionURI')
+				cleanup();
 			})
 
 			wc.on('error', (error) => {
@@ -522,18 +527,11 @@ export function WalletConnectV1({
 	}, [])
 
 	const handleTimeout = useCallback(() => {
-		setState((oldState) => ({
-			...oldState,
-			session: null,
-			timedOut: true,
-		}))
+		cleanup(true);
 	}, [])
 
 	const handleCancel = useCallback(() => {
-		setState((oldState) => ({
-			...oldState,
-			session: null,
-		}))
+		cleanup();
 	}, [])
 
 	return (
