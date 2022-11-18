@@ -1,4 +1,4 @@
-import { InputMode, NetworkConfig } from '@/types/types'
+import { NetworkConfig } from '@/types/types'
 import LedgerLivePlarformSDK, { Account } from '@ledgerhq/live-app-sdk'
 import { Text } from '@ledgerhq/react-ui'
 import GlitchText from '@ledgerhq/react-ui/components/animations/GlitchText'
@@ -10,13 +10,12 @@ import WalletConnectClient from '@walletconnect/client'
 import { IJsonRpcRequest, IWalletConnectSession } from '@walletconnect/legacy-types'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled, { css, keyframes } from 'styled-components'
 import { TimedOutAlert } from '../alerts/ErrorTimedOut'
 import { InfoConnectionAlert } from '../alerts/InfoConnection'
 import { Connected } from './Connected'
-import { Disconnected } from './Disconnected'
 import { PendingConnection } from './PendingConnection'
 import { PendingRequest } from './PendingRequest'
 
@@ -138,23 +137,23 @@ const getInitialState = (
 	}
 }
 
-export type WalletConnectProps = {
-	initialMode?: InputMode
+export type WalletConnectV1Props = {
 	initialAccountId?: string
 	initialURI?: string
 	networks: NetworkConfig[]
 	platformSDK: LedgerLivePlarformSDK
 	accounts: Account[]
+	setUri: Dispatch<SetStateAction<string | undefined>>
 }
 
 export function WalletConnectV1({
-	initialMode,
 	initialAccountId,
 	initialURI,
 	networks = [],
 	platformSDK,
 	accounts,
-}: WalletConnectProps) {
+	setUri
+}: WalletConnectV1Props) {
 	const selectedAccountRef = useRef<Account>()
 	const wcRef = useRef<WalletConnectClient>()
 
@@ -248,6 +247,7 @@ export function WalletConnectV1({
 					}
 				})
 				wcRef.current = undefined
+				setUri(undefined);
 				localStorage.removeItem('session')
 				localStorage.removeItem('sessionURI')
 			})
@@ -528,10 +528,6 @@ export function WalletConnectV1({
 		}))
 	}, [])
 
-	const handleConnect = useCallback((uri: string) => {
-		createClient({ uri })
-	}, [])
-
 	return (
 		<WalletConnectContainer>
 			<BannerContainer>
@@ -547,7 +543,7 @@ export function WalletConnectV1({
 				) : null}
 			</BannerContainer>
 			<WalletConnectInnerContainer>
-				{session && selectedAccount ? (
+				{!!(session && selectedAccount) && (
 					<>
 						{session.peerMeta ? (
 							<>
@@ -625,13 +621,6 @@ export function WalletConnectV1({
 							/>
 						)}
 					</>
-				) : (
-					<CSSTransition classNames="fade" timeout={200}>
-						<Disconnected
-							mode={initialMode}
-							onConnect={handleConnect}
-						/>
-					</CSSTransition>
 				)}
 			</WalletConnectInnerContainer>
 		</WalletConnectContainer>
