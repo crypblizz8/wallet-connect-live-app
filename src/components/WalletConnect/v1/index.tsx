@@ -9,7 +9,7 @@ import { stripHexPrefix } from '@/utils/currencyFormatter/helpers'
 import WalletConnectClient from '@walletconnect/client'
 import {
 	IJsonRpcRequest,
-	IWalletConnectSession
+	IWalletConnectSession,
 } from '@walletconnect/legacy-types'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
@@ -19,7 +19,7 @@ import {
 	useCallback,
 	useEffect,
 	useRef,
-	useState
+	useState,
 } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled, { css, keyframes } from 'styled-components'
@@ -264,7 +264,7 @@ export function WalletConnectV1({
 			})
 
 			wc.on('disconnect', () => {
-				cleanup();
+				cleanup()
 			})
 
 			wc.on('error', (error) => {
@@ -527,11 +527,11 @@ export function WalletConnectV1({
 	}, [])
 
 	const handleTimeout = useCallback(() => {
-		cleanup(true);
+		cleanup(true)
 	}, [])
 
 	const handleCancel = useCallback(() => {
-		cleanup();
+		cleanup()
 	}, [])
 
 	return (

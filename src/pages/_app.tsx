@@ -13,10 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const { theme = 'dark' } = router.query
 
 	// Step 1 - Initialize wallets and wallet connect client
-	const initialized = useInitialization()
+	useInitialization()
 
 	// Step 2 - Once initialized, set up wallet connect event manager
-	useWalletConnectEventsManager(initialized)
+	// useWalletConnectEventsManager(initialized)
 
 	// ToDo: Step 3 - Use Legacy.
 	// useWalletConnectEventsManager(initialized)
