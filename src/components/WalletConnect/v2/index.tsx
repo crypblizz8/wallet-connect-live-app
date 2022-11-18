@@ -3,7 +3,7 @@ import LedgerLivePlarformSDK, { Account } from '@ledgerhq/live-app-sdk'
 import { Text } from '@ledgerhq/react-ui'
 import GlitchText from '@ledgerhq/react-ui/components/animations/GlitchText'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 
 export type WalletConnectProps = {
 	initialMode?: InputMode
@@ -12,6 +12,7 @@ export type WalletConnectProps = {
 	networks: NetworkConfig[]
 	platformSDK: LedgerLivePlarformSDK
 	accounts: Account[]
+	setUri: Dispatch<SetStateAction<string | undefined>>
 }
 
 export function WalletConnectV2({

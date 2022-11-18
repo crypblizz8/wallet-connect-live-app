@@ -31,16 +31,14 @@ export default function WalletConnect({
 	}
 
 	if (uri?.includes('@1?')) {
-		console.log('walletConnect v1', uri)
 		return (
 			<WalletConnectV1
-				initialURI={uri || initialURI}
+				initialURI={uri}
 				setUri={setUri}
 				{...rest}
 			/>
 		)
 	} else {
-		console.log('walletConnect v2', uri)
-		return <WalletConnectV2 initialURI={uri || initialURI} {...rest} />
+		return <WalletConnectV2 initialURI={uri} setUri={setUri} {...rest} />
 	}
 }
