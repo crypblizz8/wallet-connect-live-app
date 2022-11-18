@@ -20,7 +20,7 @@ export default function WalletConnect({
 	initialMode,
 	...rest
 }: WalletConnectProps) {
-	const [uri, setUri] = useState<string>()
+	const [uri, setUri] = useState<string | undefined>(initialURI)
 
 	if (!uri) {
 		return (
@@ -30,20 +30,17 @@ export default function WalletConnect({
 		)
 	}
 
-	if (initialURI?.includes('@1?')) {
+	if (uri?.includes('@1?')) {
+		console.log('walletConnect v1', uri)
 		return (
 			<WalletConnectV1
 				initialURI={uri || initialURI}
-                setUri={setUri}
+				setUri={setUri}
 				{...rest}
 			/>
 		)
 	} else {
-		return (
-			<WalletConnectV2
-				initialURI={uri || initialURI}
-				{...rest}
-			/>
-		)
+		console.log('walletConnect v2', uri)
+		return <WalletConnectV2 initialURI={uri || initialURI} {...rest} />
 	}
 }

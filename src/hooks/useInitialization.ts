@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { createSignClient } from '@/components/WalletConnect/SignClient'
+import { createSignClient } from '@/components/WalletConnect/v2/SignClient'
 
 export default function useInitialization() {
   const [initialized, setInitialized] = useState(false)

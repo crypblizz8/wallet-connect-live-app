@@ -7,14 +7,24 @@ import { convertEthToLiveTX } from '@/helpers/converters'
 import { compareETHAddresses } from '@/helpers/generic'
 import { stripHexPrefix } from '@/utils/currencyFormatter/helpers'
 import WalletConnectClient from '@walletconnect/client'
-import { IJsonRpcRequest, IWalletConnectSession } from '@walletconnect/legacy-types'
+import {
+	IJsonRpcRequest,
+	IWalletConnectSession,
+} from '@walletconnect/legacy-types'
 import { useTranslation } from 'next-i18next'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import {
+	Dispatch,
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled, { css, keyframes } from 'styled-components'
-import { TimedOutAlert } from '../alerts/ErrorTimedOut'
-import { InfoConnectionAlert } from '../alerts/InfoConnection'
+import { TimedOutAlert } from '../../alerts/ErrorTimedOut'
+import { InfoConnectionAlert } from '../../alerts/InfoConnection'
 import { Connected } from './Connected'
 import { PendingConnection } from './PendingConnection'
 import { PendingRequest } from './PendingRequest'
@@ -152,7 +162,7 @@ export function WalletConnectV1({
 	networks = [],
 	platformSDK,
 	accounts,
-	setUri
+	setUri,
 }: WalletConnectV1Props) {
 	const selectedAccountRef = useRef<Account>()
 	const wcRef = useRef<WalletConnectClient>()
@@ -247,7 +257,7 @@ export function WalletConnectV1({
 					}
 				})
 				wcRef.current = undefined
-				setUri(undefined);
+				setUri(undefined)
 				localStorage.removeItem('session')
 				localStorage.removeItem('sessionURI')
 			})
@@ -374,8 +384,7 @@ export function WalletConnectV1({
 									jsonrpc: '2.0',
 									error: {
 										code: 3,
-										message:
-											'Message signed declined',
+										message: 'Message signed declined',
 									},
 								})
 							}
@@ -411,8 +420,7 @@ export function WalletConnectV1({
 									jsonrpc: '2.0',
 									error: {
 										code: 3,
-										message:
-											'Message signed declined',
+										message: 'Message signed declined',
 									},
 								})
 							}

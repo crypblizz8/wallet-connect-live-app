@@ -5,7 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { WalletConnect } from '@/components/WalletConnect'
+import WalletConnect from '@/components/WalletConnect/'
 import { Container } from '@/styles/styles'
 import { NetworkConfig } from '@/types/types'
 import { Flex } from '@ledgerhq/react-ui'
